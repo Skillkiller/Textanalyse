@@ -17,13 +17,15 @@ $file = 'Chat.txt';
 if (!file_exists($file)) {
 	?>
 	<body>
-		<div class="box box-solid box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">Datei fehlt!</h3>
-			</div>
-			<div class=box-body">
-				<p>Die angeforderte Datei fehlt.</p>
-				<p>Leite auf die Upload Seite weiter</p>
+		<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+			<div class="box box-solid box-danger">
+				<div class="box-header with-border">
+					<h3 class="box-title">Datei fehlt!</h3>
+				</div>
+				<div class=box-body">
+					<p>Die angeforderte Datei fehlt.</p>
+					<p>Leite auf die Upload Seite weiter</p>
+				</div>
 			</div>
 		</div>
 		<meta http-equiv="refresh" content="3; URL=index.html"  />	
@@ -122,17 +124,32 @@ foreach ($buchstaben as $zahl) {
 						$prozent = 100/$all;
 						$prozent = $prozent * $buchstaben[$buchstabe];
 						
+						$danger = 1;
+						$success = (100/(count($buchstabenliste)/2));
 						
+						//Standard Farben setzen
+						$bar = "warning";
+						$label = "yellow";
+						
+						if ($prozent < $danger) {
+							$bar = "danger";
+							$label = "red";
+						}
+						
+						if ($prozent > $success) {
+							$bar = "success";
+							$label = "green";
+						}
 						?>
 					<tr>
 						<td><?php echo "$gros";?></td>
-						<td><span class="badge bg-green"><?php echo "$buchstaben[$buchstabe]";?></span></td>
+						<td><span class="badge bg-light-blue"><?php echo "$buchstaben[$buchstabe]";?></span></td>
 						<td>
 							<div class="progress progress-xs">
-							<div class="progress-bar progress-bar-warning" style="width: <?php echo "$prozent"?>%"></div>
+							<div class="progress-bar progress-bar-<?php echo $bar;?>" style="width: <?php echo "$prozent"?>%"></div>
 							</div>
 						</td>
-						<td><span class="badge bg-green"><?php echo number_format($prozent, 3);?>%</span></td>
+						<td><span class="badge bg-<?php echo "$label";?>"><?php echo number_format($prozent, 3);?>%</span></td>
 					</tr>
 						<?php
 					}

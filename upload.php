@@ -11,6 +11,25 @@
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
 </head>
 <?php
+if (!isset($datei)) {
+	?>
+	<body>
+		<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+			<div class="box box-solid box-danger">
+				<div class="box-header with-border">
+					<h3 class="box-title">Error: Kein Datei</h3>
+				</div>
+				<div class="box-body">
+					<p>Du hast keine Datei ausgewählt oder bist auf versehentlich auf diese Seite gelangt</p>
+					<p>Leite dich zurück auf die Upload Seite</p>
+				</div>
+			</div>
+		</div>
+		<meta http-equiv="refresh" content="3; URL=index.html"  />
+	</body>	
+	<?php
+	exit;
+}
 $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);
 $extension = strtolower(pathinfo($_FILES['datei']['name'], PATHINFO_EXTENSION));
  
@@ -20,13 +39,15 @@ $allowed_extensions = array('txt');
 if(!in_array($extension, $allowed_extensions)) {
 ?>
 <body>
-	<div class="box box-solid box-danger">
-		<div class="box-header with-border">
-			<h3 class="box-title">Error: Falscher Datei Typ!</h3>
-		</div>
-		<div class="box-body">
-			<p>Du darfst hier nur ".txt" Dateien hochladen</p>
-			<p>Leite dich zurück auf die Upload Seite</p>
+	<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+		<div class="box box-solid box-danger">
+			<div class="box-header with-border">
+				<h3 class="box-title">Error: Falscher Datei Typ!</h3>
+			</div>
+			<div class="box-body">
+				<p>Du darfst hier nur ".txt" Dateien hochladen</p>
+				<p>Leite dich zurück auf die Upload Seite</p>
+			</div>
 		</div>
 	</div>
 	<meta http-equiv="refresh" content="3; URL=index.html"  />
@@ -39,14 +60,16 @@ exit;
 $max_size = 15*1024*1024; //15 MB
 if($_FILES['datei']['size'] > $max_size) {
 ?>
- <body>
-	<div class="box box-solid box-danger">
-		<div class="box-header with-border">
-			<h3 class="box-title">Error: Datei zu groß</h3>
-		</div>
-		<div class="box-body">
-			<p>Die Datei darf maximal 15 MB groß sein</p>
-			<p>Leite dich zurück auf die Upload Seite</p>
+<body>
+	<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+		<div class="box box-solid box-danger">
+			<div class="box-header with-border">
+				<h3 class="box-title">Error: Datei zu groß</h3>
+			</div>
+			<div class="box-body">
+				<p>Die Datei darf maximal 15 MB groß sein</p>
+				<p>Leite dich zurück auf die Upload Seite</p>
+			</div>
 		</div>
 	</div>
 	<meta http-equiv="refresh" content="5; URL=index.html"  />
