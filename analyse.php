@@ -1,11 +1,33 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	
+	<!-- Schrift Style -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	
+	<!-- Form Style -->
+	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+</head>
 <?php // content="text/plain; charset=utf-8"
 
 $file = 'Chat.txt';
 
 if (!file_exists($file)) {
 	?>
-	<p>Es exestiert keine Datei! Weiterleitung läuft</p>
-	<meta http-equiv="refresh" content="1; URL=index.php"  />
+	<body>
+		<div class="box box-solid box-danger">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datei fehlt!</h3>
+			</div>
+			<div class=box-body">
+				<p>Die angeforderte Datei fehlt.</p>
+				<p>Leite auf die Upload Seite weiter</p>
+			</div>
+		</div>
+		<meta http-equiv="refresh" content="3; URL=index.html"  />	
+	</body>
 	<?php
 	exit;
 }
@@ -65,20 +87,71 @@ while (!feof($file_handle)) {
 foreach ($buchstaben as $zahl) {
 	$all = $all + $zahl;
 }
-
-//Gebe Anzahl aller erkannten Buchstaben aus
-echo "<b>All: $all </b><br />";
-
-//Gebe Anzahl der Buchstaben sortiert nach Buchstabe aus
-foreach ($buchstabenliste as $buchstabe) {
-	$gros = strtoupper($buchstabe);
-	echo "$gros: $buchstaben[$buchstabe] <br />";
-}
-
-//Schließe Datei
-fclose($file_handle);
-
-//Lösche "Chat.txt"
-unlink($file);
-
 ?>
+<body>
+	<div class="box">
+		<div class="box-header">
+			<h3 class="box-title">Gezählte Buchstaben</h3>
+			<a href="index.html"><button type="submit" class="btn btn-info pull-right">Zurück</button></a>
+        </div>
+		<div class="box-body no-padding">
+			<table class="table table-striped">
+				<tbody>
+					<tr>
+						<th style="width: 10px">#</th>
+						<th style="width: 50px">Anzahl</th>
+						<th>Benutzung</th>
+						<th style="width: 40px">Prozent</th>
+					</tr>
+					<tr> <!-- All Zeile | Gebe Daten aller erkannten Buchstaben aus-->
+						<td>All</td>
+						<td><span class="badge bg-green"><?php echo "$all";?></span></td>
+						<td>
+							<div class="progress progress-xs progress-striped active">
+							<div class="progress-bar progress-bar-success" style="width: 100%"></div>
+							</div>
+						</td>
+						<td><span class="badge bg-green">100%</span></td>
+					</tr>
+					
+					<?php
+
+					//Gebe Anzahl der Buchstaben sortiert nach Buchstabe aus
+					foreach ($buchstabenliste as $buchstabe) {
+						$gros = strtoupper($buchstabe);
+						$prozent = 100/$all;
+						$prozent = $prozent * $buchstaben[$buchstabe];
+						
+						
+						?>
+					<tr>
+						<td><?php echo "$gros";?></td>
+						<td><span class="badge bg-green"><?php echo "$buchstaben[$buchstabe]";?></span></td>
+						<td>
+							<div class="progress progress-xs">
+							<div class="progress-bar progress-bar-warning" style="width: <?php echo "$prozent"?>%"></div>
+							</div>
+						</td>
+						<td><span class="badge bg-green"><?php echo number_format($prozent, 3);?>%</span></td>
+					</tr>
+						<?php
+					}
+
+				//Schließe Datei
+				fclose($file_handle);
+
+				//Lösche "Chat.txt"
+				unlink($file);
+				?>
+					
+					
+					
+					
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

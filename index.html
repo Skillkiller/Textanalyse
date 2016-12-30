@@ -1,0 +1,37 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	
+	<!-- Schrift Style -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	
+	<!-- Form Style -->
+	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+</head>
+<body>
+<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Textanalyse</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" action="upload.php" method="post" enctype="multipart/form-data">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="InputFile">Datei auswählen</label>
+                  <input id="InputFile" type="file" name="datei" accept=".txt" required>
+
+                  <p class="help-block">Es sind nur .txt Dateien erlaubt</p>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Hochladen</button>
+              </div>
+            </form>
+          </div>
+</body>
+</html>
