@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
 </head>
 <?php
-if (!isset($datei)) {
+if (!isset($_FILES['datei']['name'])) {
 	?>
 	<body>
 		<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
