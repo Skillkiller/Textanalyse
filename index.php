@@ -1,5 +1,9 @@
 <html>
 <head>
+<?php 
+include(__DIR__ . "/config/Verbindungen.php");
+include(__DIR__ . "/config/config.php");
+?>
 	<meta charset="utf-8">
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
@@ -21,17 +25,35 @@
             <form role="form" action="upload.php" method="post" enctype="multipart/form-data">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="InputFile">Datei auswählen</label>
-                  <input id="InputFile" type="file" name="datei" accept=".txt" required>
+					<div class="col-sm-10">
+					  <label for="InputFile">Datei auswählen</label>
+					  <input id="InputFile" type="file" name="datei" accept=".txt" required>
 
-                  <p class="help-block">Es sind nur .txt Dateien erlaubt</p>
+					  <p class="help-block">Es sind nur .txt Dateien erlaubt</p>
+					</div>
                 </div>
-              </div>
-              <!-- /.box-body -->
+				<?php
+				if ($enableMysql) {
+				?>
+				<div class="form-group">
+					<div class="col-sm-10">
+						<div class="checkbox">
+						  <label>
+							<input name = "Regeln" type="checkbox" value="ok" <?php if ($forceSave) { echo "required"; } ?>>Ich erlaube das Speicher bestimmter Daten</input>
+						  </label>
+						</div>
+					</div>
+				</div>
+				<?php 
+				}
+				?>
+            </div>
+            <!-- /.box-body -->
 
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Hochladen</button>
-              </div>
+            <div class="box-footer">
+				<button type="submit" class="btn btn-primary">Hochladen</button>
+				<span class="badge bg-red pull-right">Die Seite speichert zwischenzeitlich Cookies</span>
+            </div>
             </form>
     </div>
 </div>

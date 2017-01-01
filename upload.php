@@ -1,5 +1,14 @@
+<?php
+session_start();
+?>
 <html>
 <head>
+<?php 
+include(__DIR__ . "/config/Verbindungen.php");
+include(__DIR__ . "/config/config.php");
+include(__DIR__ . "/config/funktionen.php");
+
+?>
 	<meta charset="utf-8">
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
@@ -25,7 +34,7 @@ if (!isset($_FILES['datei']['name'])) {
 				</div>
 			</div>
 		</div>
-		<meta http-equiv="refresh" content="3; URL=index.html"  />
+		<meta http-equiv="refresh" content="3; URL=index.php"  />
 	</body>	
 	<?php
 	exit;
@@ -50,7 +59,7 @@ if(!in_array($extension, $allowed_extensions)) {
 			</div>
 		</div>
 	</div>
-	<meta http-equiv="refresh" content="3; URL=index.html"  />
+	<meta http-equiv="refresh" content="5; URL=index.php"  />
 </body>
 <?php
 exit;
@@ -72,26 +81,60 @@ if($_FILES['datei']['size'] > $max_size) {
 			</div>
 		</div>
 	</div>
-	<meta http-equiv="refresh" content="5; URL=index.html"  />
+	<meta http-equiv="refresh" content="5; URL=index.php"  />
 </body> 
 <?php
 exit;
 }
- 
-//Pfad zum Upload
-$new_path = "Chat.txt";
+
+//Prüfe ob MySQL aktiv ist und ob zugestimmt wurde
+if ($enableMysql) {
+	if(!isset($_POST["Regeln"]) or !$_POST["Regeln"] == "ok") {
+		if ($forceSave) {
+			?>
+			<body>
+				<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+					<div class="box box-solid box-danger">
+						<div class="box-header with-border">
+							<h3 class="box-title">Error: Speicherung nicht akzeptiert!</h3>
+						</div>
+						<div class="box-body">
+							<p>Du hast die Speicherung bestimmter Daten nicht akzeptiert. Text Analyse abgebrochen und Datei gelöscht.</p>
+							<p>Leite dich zurück auf die Upload Seite</p>
+						</div>
+					</div>
+				</div>
+				<meta http-equiv="refresh" content="3; URL=index.php"  />
+			</body>
+			
+			<?php
+			exit;
+		} else {
+			$_SESSION["Speicherung"] = false; //Hat der Speicherung nicht zugestimmt
+		}
+	} else {
+			$_SESSION["Speicherung"] = true; //Hat der Speicherung zugestimmt
+	}
+}
+$timestamp = time();  //Ermittle Zeitstempel
+
+//Pfad zum Upload mit Zeitstempel und Zufallsbuchstaben
+$new_path = __DIR__ . "/uploads/Chat - $timestamp - ". zufallsstring(5) .".txt";
+$_SESSION["pfad"] = $new_path; //Speichere den neuen Pfad als Cookie
  
 //Alles okay, verschiebe Datei an neuen Pfad
 move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
 ?>
 <body>
-	<div class="box box-solid box-success">
-		<div class="box-header with-border">
-			<h3 class="box-title">Datei hochgeladen</h3>
-		</div>
-		<div class="box-body">
-			<p>Die Datei wurde erfolgreich hochgeladen und wir jetzt analysiert</p>
-			<p>Weiterleitung läuft</p>
+	<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+		<div class="box box-solid box-success">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datei hochgeladen</h3>
+			</div>
+			<div class="box-body">
+				<p>Die Datei wurde erfolgreich hochgeladen und wir jetzt analysiert</p>
+				<p>Weiterleitung läuft</p>
+			</div>
 		</div>
 	</div>
 	<meta http-equiv="refresh" content="1; URL=analyse.php"  />

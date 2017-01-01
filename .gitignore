@@ -46,8 +46,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Chat Datei
-Chat.txt
+# Chat Dateien
+uploads/
 
 #Config Datei
-config/*
+#config/*
+
+#Interne Notizen und ToDo's
+TODO/*
+todo/*
+TODO.txt
+intern/*

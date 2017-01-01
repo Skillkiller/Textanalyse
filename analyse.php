@@ -1,5 +1,12 @@
+<?php
+session_start();
+?>
 <html>
 <head>
+<?php 
+include(__DIR__ . "/config/Verbindungen.php");
+include(__DIR__ . "/config/config.php");
+?>
 	<meta charset="utf-8">
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
@@ -11,8 +18,27 @@
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
 </head>
 <?php // content="text/plain; charset=utf-8"
-
-$file = 'Chat.txt';
+if (!isset($_SESSION["pfad"]) or !isset($_SESSION["Speicherung"])) {
+	?>
+		<body>
+		<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
+			<div class="box box-solid box-danger">
+				<div class="box-header with-border">
+					<h3 class="box-title">Error: Cookie's fehlen</h3>
+				</div>
+				<div class=box-body">
+					<p>Einer oder mehere Cookies fehlen. Dies kann passieren wenn du Cookies deaktiviert hast oder du keine Datei hochgeladen hast.</p>
+					<p>Leite auf die Upload Seite weiter</p>
+				</div>
+			</div>
+		</div>
+		<meta http-equiv="refresh" content="3; URL=index.php"  />	
+	</body>
+	
+	<?php
+	exit;
+}
+$file = $_SESSION["pfad"];
 
 if (!file_exists($file)) {
 	?>
@@ -20,7 +46,7 @@ if (!file_exists($file)) {
 		<div class="col-md-4" style="margin-top: 10px; margin-right: auto; /* Abstand rechts */ margin-bottom: 10px; margin-left: auto; /* Abstand links */ float: none;">
 			<div class="box box-solid box-danger">
 				<div class="box-header with-border">
-					<h3 class="box-title">Datei fehlt!</h3>
+					<h3 class="box-title">Error: Datei fehlt!</h3>
 				</div>
 				<div class=box-body">
 					<p>Die angeforderte Datei fehlt.</p>
@@ -28,7 +54,7 @@ if (!file_exists($file)) {
 				</div>
 			</div>
 		</div>
-		<meta http-equiv="refresh" content="3; URL=index.html"  />	
+		<meta http-equiv="refresh" content="3; URL=index.php"  />	
 	</body>
 	<?php
 	exit;
@@ -89,12 +115,17 @@ while (!feof($file_handle)) {
 foreach ($buchstaben as $zahl) {
 	$all = $all + $zahl;
 }
+
+if ($forceSave and !$_SESSION["Speicherung"]) {
+	echo "Ein kritischer Fehler welcher eigentlich nicht möglich ist, ist aufgetreten";
+	exit;
+}
 ?>
 <body>
 	<div class="box">
 		<div class="box-header">
 			<h3 class="box-title">Gezählte Buchstaben</h3>
-			<a href="index.html"><button type="submit" class="btn btn-info pull-right">Zurück</button></a>
+			<a href="index.php"><button type="submit" class="btn btn-info pull-right">Zurück</button></a>
         </div>
 		<div class="box-body no-padding">
 			<table class="table table-striped">
@@ -159,6 +190,9 @@ foreach ($buchstaben as $zahl) {
 
 				//Lösche "Chat.txt"
 				unlink($file);
+				
+				//Lösche Cookie
+				session_destroy();
 				?>
 					
 					

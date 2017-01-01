@@ -1,9 +1,18 @@
 <?php
-$enableMysql = true;
+include(__DIR__ . "/config.php");
 
-$verbindung = mysqli_connect("localhost", "Benutzer", "Kennwort")
-or die ("Fehler bei der Anmeldung");
+$sqlserver = "localhost";	// Nur einstellen wenn MySQL aktiv sein soll
+$sqlusername = "root";	// Nur einstellen wenn MySQL aktiv sein soll
+$sqlpassword = "";	// Nur einstellen wenn MySQL aktiv sein soll
 
-mysqli_select_db($verbindung, "Analyse")
-or die ("Verbindung zur Datenbank gescheitert");
+$sqldatenbank = "analyse";	// Nur einstellen wenn MySQL aktiv sein soll
+
+if ($enableMysql) {
+	$verbindung = mysqli_connect($sqlserver, $sqlusername, $sqlpassword)
+	or die ("Fehler bei der Anmeldung");
+
+	mysqli_select_db($verbindung, $sqldatenbank)
+	or die ("Verbindung zur Datenbank gescheitert");
+}
+
 ?>
